@@ -1,0 +1,34 @@
+python run.py --reset-db
+
+EXPECTED OUTPUT - DO NOT TYPE IN POWERSHELL:
+DATABASE -> schema ready at study_planning_agent.db
+FACTORY -> created FakeCalendarAdapter
+REQUEST -> 1 created for Alex Student
+STATE -> Observing
+STATE -> CallingCalendarTool
+DECORATOR -> calendar call started
+FakeCalendarAdapter: get_availability() called
+DECORATOR -> calendar call finished with 2 slots
+STATE -> Planning
+DATABASE -> study plan 1 saved
+STATE -> Completed
+RESULT -> Study plan generated
+PLAN -> Monday 14:00-16:00: Unit and Integration Testing (2.0 h)
+PLAN -> Tuesday 10:00-12:00: AI Agent Evaluation (1.5 h)
+
+COMMAND - COPY AND RUN:
+python inspect_database.py
+
+EXPECTED OUTPUT - DO NOT TYPE IN POWERSHELL:
+DATABASE SUMMARY
+students: 1
+assignments: 2
+planning_requests: 1
+study_plans: 1
+plan_items: 2
+memory_events: 6
+tool_calls: 1
+LATEST REQUEST -> id=1 state=Completed
+LATEST PLAN -> id=1 student=Alex Student
+PLAN ROW -> Monday 14:00-16:00: Unit and Integration Testing (2.0 h)
+PLAN ROW -> Tuesday 10:00-12:00: AI Agent Evaluation (1.5 h)
