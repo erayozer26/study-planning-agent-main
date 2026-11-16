@@ -14,87 +14,104 @@ The project is developed incrementally. Each laboratory adds software engineerin
 
 ```text
 study-planning-agent/
-├── adapters/
-│   ├── __init__.py
-│   ├── fake_calendar.py
-│   ├── logging_calendar.py
-│   ├── sqlite_database.py
-│   ├── sqlite_memory.py
-│   └── sqlite_repository.py
-├── agent/
-│   ├── __init__.py
-│   ├── orchestrator.py
-│   ├── planner.py
-│   └── states.py
-├── db/
-│   └── schema.sql
-├── docs/
-│   ├── architecture/
-│   │   ├── agent-architecture.md
-│   │   ├── architecture-decisions.md
-│   │   ├── interfaces.md
-│   │   ├── README.md
-│   │   └── system-architecture.md
-│   ├── behavior/
-│   │   ├── activity-diagram.md
-│   │   ├── README.md
-│   │   ├── sequence-diagram.md
-│   │   └── state-machine-diagram.md
-│   ├── data-model/
-│   │   ├── conceptual-model.md
-│   │   ├── mapping.md
-│   │   ├── normalization.md
-│   │   ├── queries.md
-│   │   ├── README.md
-│   │   └── relational-schema.md
-│   ├── design-patterns/
-│   │   ├── code-review-checklist.md
-│   │   ├── patterns.md
-│   │   ├── README.md
-│   │   ├── solid-review.md
-│   │   └── traceability.md
-│   ├── models/
-│   │   ├── class-diagram.md
-│   │   ├── database-diagram.md
-│   │   ├── object-diagram.md
-│   │   ├── package-diagram.md
-│   │   ├── README.md
-│   │   └── use-case-diagram.md
-│   ├── project-management/
-│   │   ├── daily-scrum-log.md
-│   │   ├── definition-of-done.md
-│   │   ├── product-backlog.md
-│   │   ├── README.md
-│   │   ├── retrospective.md
-│   │   ├── sprint-board.md
-│   │   ├── sprint-plan.md
-│   │   ├── sprint-review.md
-│   │   └── xp-tdd-notes.md
-│   ├── requirements.md
-│   ├── stakeholdres.md
-│   ├── use-cases.md
-│   └── user-stories.md
-├── domain/
-│   ├── __init__.py
-│   └── models.py
-├── factories/
-│   ├── __init__.py
-│   └── calendar_factory.py
-├── notes/
-│   └── week1.md
-├── ports/
-│   ├── __init__.py
-│   ├── calendar_port.py
-│   ├── memory_store.py
-│   └── study_repository.py
-├── .gitignore
-├── __init__.py
-├── agent_memory.json
-├── agent_output.txt
-├── inspect_database.py
-├── lab_agent.py
-├── README.md
-└── run.py
+|-- adapters/
+|   |-- __init__.py
+|   |-- fake_calendar.py
+|   |-- logging_calendar.py
+|   |-- sqlite_database.py
+|   |-- sqlite_memory.py
+|   `-- sqlite_repository.py
+|-- agent/
+|   |-- __init__.py
+|   |-- orchestrator.py
+|   |-- planner.py
+|   |-- planning_policy.py
+|   `-- states.py
+|-- db/
+|   `-- schema.sql
+|-- docs/
+|   |-- architecture/
+|   |   |-- agent-architecture.md
+|   |   |-- architecture-decisions.md
+|   |   |-- interfaces.md
+|   |   |-- README.md
+|   |   `-- system-architecture.md
+|   |-- behavior/
+|   |   |-- activity-diagram.md
+|   |   |-- README.md
+|   |   |-- sequence-diagram.md
+|   |   `-- state-machine-diagram.md
+|   |-- data-model/
+|   |   |-- conceptual-model.md
+|   |   |-- mapping.md
+|   |   |-- normalization.md
+|   |   |-- queries.md
+|   |   |-- README.md
+|   |   `-- relational-schema.md
+|   |-- design-patterns/
+|   |   |-- code-review-checklist.md
+|   |   |-- patterns.md
+|   |   |-- README.md
+|   |   |-- solid-review.md
+|   |   `-- traceability.md
+|   |-- models/
+|   |   |-- class-diagram.md
+|   |   |-- database-diagram.md
+|   |   |-- object-diagram.md
+|   |   |-- package-diagram.md
+|   |   |-- README.md
+|   |   `-- use-case-diagram.md
+|   |-- project-management/
+|   |   |-- daily-scrum-log.md
+|   |   |-- definition-of-done.md
+|   |   |-- product-backlog.md
+|   |   |-- README.md
+|   |   |-- retrospective.md
+|   |   |-- sprint-board.md
+|   |   |-- sprint-plan.md
+|   |   |-- sprint-review.md
+|   |   `-- xp-tdd-notes.md
+|   |-- testing/
+|   |   |-- acceptance-scenarios.md
+|   |   |-- agent-evaluation.md
+|   |   |-- README.md
+|   |   |-- tdd-cycle.md
+|   |   `-- test-strategy.md
+|   |-- requirements.md
+|   |-- stakeholdres.md
+|   |-- use-cases.md
+|   `-- user-stories.md
+|-- domain/
+|   |-- __init__.py
+|   `-- models.py
+|-- factories/
+|   |-- __init__.py
+|   `-- calendar_factory.py
+|-- notes/
+|   `-- week1.md
+|-- ports/
+|   |-- __init__.py
+|   |-- calendar_port.py
+|   |-- memory_store.py
+|   `-- study_repository.py
+|-- tests/
+|   |-- __init__.py
+|   |-- test_acceptance_workflows.py
+|   |-- test_calendar_integration.py
+|   |-- test_planning_policy.py
+|   `-- test_system_planning.py
+|-- .gitignore
+|-- __init__.py
+|-- agent_memory.json
+|-- agent_output.txt
+|-- evaluate_agent.py
+|-- EXPECTED_OUTPUT_WEEK10_EVALUATION.txt
+|-- EXPECTED_OUTPUT_WEEK10_RUNTIME.txt
+|-- EXPECTED_OUTPUT_WEEK10_TESTS.txt
+|-- inspect_database.py
+|-- lab_agent.py
+|-- README.md
+`-- run.py
 ```
 
 ## Week 2 - Requirements Engineering
@@ -134,6 +151,20 @@ Documentation and engineering evidence: [`docs/design-patterns/README.md`](docs/
 
 The executable `lab_agent.py` application is unchanged from Week 1. Week 2 changes the specification and project documentation, not the implementation.
 
+## Week 10 - Testing, TDD and AI-Agent Evaluation
+
+Week 10 adds a separately tested two-hour planning policy, nine automated tests
+across four test scopes, acceptance checks for safe failure, and a four-scenario
+agent-evaluation report. See `docs/testing/README.md`.
+
+Run from the project root:
+
+```powershell
+python -m unittest discover -s tests -v
+python evaluate_agent.py
+python run.py --reset-db
+```
+
 ## Current Project Status
 
 - Week 1: completed - Git workflow and introductory agent simulator
@@ -142,7 +173,7 @@ The executable `lab_agent.py` application is unchanged from Week 1. Week 2 chang
 - Week 4: completed - behavioral models and executable agent workflow
 - Week 5: completed - architectural decomposition and interfaces
 - Week 6: completed - conceptual data model, relational design, normalization and SQLite persistence
-- Week 7: next - coding standards, code review, branching and traceability
+- Week 7: completed - coding standards, code review, branching and traceability
 - Week 8: completed - Scrum sprint planning, Product Backlog, Sprint Board, simulated Daily Scrum, Sprint Review, Retrospective, and XP/TDD overview
 - Week 9: completed - SOLID refactoring, Factory/Adapter/Decorator design patterns, and regression verification
-- Week 10: next - automated testing, TDD, and agent evaluation
+- Week 10: completed - automated testing, TDD, and agent evaluation

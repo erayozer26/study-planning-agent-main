@@ -1,8 +1,10 @@
 from datetime import date  # Import date so deterministic demonstration assignments contain real deadlines.
 from pathlib import Path  # Import Path so the runtime database file can be created and reset safely.
 import sys  # Import sys so command-line flags can select success, missing-input, and failure scenarios.
+
 from domain.models import Student, Assignment  # Import stable domain input objects.
 from agent.planner import Planner  # Import the cohesive planning component.
+from agent.planning_policy import PlanningPolicy  # Import the independently tested Week 10 rule.
 from agent.orchestrator import StudyPlanningOrchestrator  # Import the application orchestrator that coordinates the use case.
 from adapters.logging_calendar import LoggingCalendarDecorator  # Import the Decorator that adds logging around any CalendarPort implementation.
 from factories.calendar_factory import CalendarAdapterFactory  # Import the Factory that hides concrete calendar-adapter construction from the composition root.
@@ -26,8 +28,8 @@ def read_provider_name():  # Define a small configuration helper so provider sel
 def build_demo_input():  # Define deterministic domain input that can be compared with the Week 6 relational model.
     student = Student(student_id=1, name="Alex Student")  # Create the same example student used throughout the semester project.
     assignments = [  # Create the small deterministic assignment collection used by the laboratory.
-        Assignment(assignment_id=101, title="SOLID Refactoring", deadline=date(2026, 11, 1), estimated_hours=3.0, priority=1),  # Create the higher-priority Week 9 assignment.
-        Assignment(assignment_id=102, title="Design Patterns", deadline=date(2026, 11, 3), estimated_hours=4.0, priority=2),  # Create the second Week 9 assignment.
+        Assignment(assignment_id=101, title="Unit and Integration Testing", deadline=date(2026, 11, 10), estimated_hours=3.0, priority=1),  # Create a longer Week 10 assignment that exercises the two-hour cap.
+        Assignment(assignment_id=102, title="AI Agent Evaluation", deadline=date(2026, 11, 12), estimated_hours=1.5, priority=2),  # Create a shorter Week 10 assignment whose hours are preserved.
     ]  # Finish the deterministic assignment list.
     return student, assignments  # Return both deterministic input values to the composition root.
 def print_plan(plan):  # Define a presentation helper that displays generated plan items.
@@ -44,7 +46,8 @@ if __name__ == "__main__":  # Execute the following composition-root code only w
     calendar_fails = "--calendar-fail" in sys.argv  # Detect the scenario where the external calendar tool fails.
     selected_assignments = [] if no_assignments else assignments  # Select the appropriate assignment list for the requested scenario.
     provider_name = read_provider_name()  # Read provider configuration without importing or constructing a concrete adapter here.
-    planner = Planner()  # Construct the planning component whose single responsibility is scheduling assignments.
+    policy = PlanningPolicy()  # Construct the tested maximum-session-length rule.
+    planner = Planner(policy=policy)  # Inject the explicit policy into the planner.
     try:  # Protect composition because invalid provider configuration should produce a controlled message rather than a traceback.
         base_calendar = CalendarAdapterFactory.create(provider_name=provider_name, should_fail=calendar_fails)  # Ask the Factory for a CalendarPort implementation instead of calling a concrete adapter constructor directly.
     except ValueError as error:  # Handle unsupported provider configuration at the application boundary.
