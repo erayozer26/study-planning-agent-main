@@ -1,11 +1,13 @@
 from datetime import date  # Import date so deterministic demonstration assignments contain real deadlines.
 from pathlib import Path  # Import Path so the runtime database file can be created and reset safely.
 import sys  # Import sys so command-line flags can select success, missing-input, and failure scenarios.
-
 from domain.models import Student, Assignment  # Import stable domain input objects.
 from agent.planner import Planner  # Import the cohesive planning component.
 from agent.planning_policy import PlanningPolicy  # Import the independently tested Week 10 rule.
 from agent.orchestrator import StudyPlanningOrchestrator  # Import the application orchestrator that coordinates the use case.
+from agent.planning_agent import PlanningAgent
+from agent.reflection_agent import ReflectionAgent
+from agent.coordinator import AgentCoordinator
 from adapters.logging_calendar import LoggingCalendarDecorator  # Import the Decorator that adds logging around any CalendarPort implementation.
 from factories.calendar_factory import CalendarAdapterFactory  # Import the Factory that hides concrete calendar-adapter construction from the composition root.
 from adapters.sqlite_database import initialize_database  # Import the schema-initialization helper for the SQLite database.
@@ -28,8 +30,8 @@ def read_provider_name():  # Define a small configuration helper so provider sel
 def build_demo_input():  # Define deterministic domain input that can be compared with the Week 6 relational model.
     student = Student(student_id=1, name="Alex Student")  # Create the same example student used throughout the semester project.
     assignments = [  # Create the small deterministic assignment collection used by the laboratory.
-        Assignment(assignment_id=101, title="Unit and Integration Testing", deadline=date(2026, 11, 10), estimated_hours=3.0, priority=1),  # Create a longer Week 10 assignment that exercises the two-hour cap.
-        Assignment(assignment_id=102, title="AI Agent Evaluation", deadline=date(2026, 11, 12), estimated_hours=1.5, priority=2),  # Create a shorter Week 10 assignment whose hours are preserved.
+        Assignment(assignment_id=111, title="Agent Design Patterns", deadline=date(2026, 11, 17), estimated_hours=3.0, priority=1),  # Create a longer Week 10 assignment that exercises the two-hour cap.
+        Assignment(assignment_id=112, title="Multi-Agent Coordination", deadline=date(2026, 11, 19), estimated_hours=1.5, priority=2),  # Create a shorter Week 10 assignment whose hours are preserved.
     ]  # Finish the deterministic assignment list.
     return student, assignments  # Return both deterministic input values to the composition root.
 def print_plan(plan):  # Define a presentation helper that displays generated plan items.
@@ -56,6 +58,9 @@ if __name__ == "__main__":  # Execute the following composition-root code only w
     calendar = LoggingCalendarDecorator(base_calendar)  # Wrap the selected CalendarPort with a Decorator that adds logging without changing provider code.
     memory = SQLiteMemoryStore(DATABASE_FILE)  # Construct persistent agent memory backed by the same relational database.
     repository = SQLiteStudyRepository(DATABASE_FILE)  # Construct the relational repository used for business and trace data.
-    application = StudyPlanningOrchestrator(planner=planner, calendar=calendar, memory=memory, repository=repository)  # Inject all dependencies into the orchestrator in one visible composition root.
-    plan = application.generate_plan(student=student, assignments=selected_assignments)  # Execute the same planning goal through persistent Week 6 architecture.
-    print_plan(plan)  # Display any generated StudyPlan items after the use case completes.
+    orchestrator = StudyPlanningOrchestrator(planner=planner, calendar=calendar, memory=memory, repository=repository)
+    planning_agent = PlanningAgent(orchestrator)
+    reflection_agent = ReflectionAgent(policy)
+    coordinator = AgentCoordinator(planning_agent, reflection_agent, memory)
+    plan = coordinator.run(student, selected_assignments)
+    print_plan(plan)
